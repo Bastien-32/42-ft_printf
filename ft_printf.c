@@ -6,7 +6,7 @@
 /*   By: badal-la <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:04:50 by badal-la          #+#    #+#             */
-/*   Updated: 2024/11/18 17:17:23 by badal-la         ###   ########.fr       */
+/*   Updated: 2024/11/18 17:49:49 by badal-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,29 +22,37 @@ int	ft_putnbr(int n)
 	i = 0;
 	if (n == -2147483648)
 	{
-		write (1, "-2147483648", 11);
-		return ;
+		i = i + write (1, "-2147483648", 11);
+		return (i);
 	}
 	if (n < 0)
 	{
 		n = -n;
-		write (1, "-", 1);
+		i = i + write (1, "-", 1);
 	}
 	if (n >= 10)
 		ft_putnbr(n / 10);
 	c = (n % 10) + '0';
-	write(1, &c, 1);
+	i = i + write(1, &c, 1);
+	return (i);
 }
 
 int	ft_putchar(char c)
 {
-	write(1, &c, 1);
+	int	i;
+
+	i = write(1, &c, 1);
+	return (i);
 }
 
 int	ft_putstr(char *s)
 {
+	int	i;
+
+	i = 0;
 	while (*s)
-		write(1, s++, 1);
+		i = i + write(1, s++, 1);
+	return (i);
 }
 
 int	ft_strlen(char *str)
@@ -59,19 +67,21 @@ int	ft_strlen(char *str)
 
 int	ft_putnbr_base(int nb, char *base)
 {
+	int		i;
 	char	c;
 
+	i = 0;
 	if (nb < 0)
 	{
 		nb = -nb;
-		write (1, "-", 1);
+		i += write (1, "-", 1);
 	}
 	if (nb >= ft_strlen(base))
 		ft_putnbr_base(nb / ft_strlen(base), base);
 	c = base[nb % ft_strlen(base)];
-	write(1, &c, 1);
+	i += write(1, &c, 1);
+	return (i);
 }
-
 
 int	callconv(va_list args, const char *format)
 {
@@ -80,15 +90,16 @@ int	callconv(va_list args, const char *format)
 	if (*format == 'c')
 		i = i + ft_putchar(va_arg(args, int));
 	else if (*format == 's')
-		i = ft_putstr(va_arg(args, char *));
+		i = i + ft_putstr(va_arg(args, char *));
 	else if (*format == 'd' || *format == 'i')
-		i = ft_putnbr(va_arg(args, int));
+		i = i + ft_putnbr(va_arg(args, int));
 	else if (*format == 'x')
-		i = ft_putnbr_base(va_arg(args, unsigned int),"0123456789abcdef");
+		i = i + ft_putnbr_base(va_arg(args, unsigned int),"0123456789abcdef");
 	else if (*format == 'X')
-		i = ft_putnbr_base(va_arg(args, unsigned int),"0123456789ABCDEF");
+		i = i + ft_putnbr_base(va_arg(args, unsigned int),"0123456789ABCDEF");
 	return (i);
 }
+
 int	ft_printf(const char *format, ...)
 {
 	int	i;
@@ -101,18 +112,30 @@ int	ft_printf(const char *format, ...)
 		if (*format == '%' && *(format + 1))
 		{
 			format++;
-			i = i + callconv(args, *format);
+			i = i + callconv(args, format);
 		}
 		else
-			write(1, format, 1);
+		{
+			i += write(1, format, 1);
+			i++;
+		}
 		format++;
 	}
 	va_end(args);
-	return (0);
+	return (i);
 }
 
+#include <stdio.h>
+
 int	main(void)
-{
+{	
+	int i = 0;
+	i = ft_printf("Hello, 42! My lucky number is %i.\n", 42);
+	ft_printf("jai ecrit %i.\n", i);
+	i = printf("Hello, 42! My lucky number is %i.\n", 42);
+	printf("jai ecrit %i.\n", i);
+
+	ft_printf("jai ecrit %i.\n", i);
 	ft_printf("Hello, 42! My lucky number is %i.\n", 42);
 	ft_printf("The numbers are: %d, %d, and %d.\n", 7, -42, 2147483647);
 	ft_printf("Testing zero: %d\n", 0);
