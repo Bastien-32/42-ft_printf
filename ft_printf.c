@@ -6,7 +6,7 @@
 /*   By: badal-la <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:04:50 by badal-la          #+#    #+#             */
-/*   Updated: 2024/11/19 14:39:08 by badal-la         ###   ########.fr       */
+/*   Updated: 2024/11/19 17:20:44 by badal-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,19 @@ int	ft_putnbr(int n)
 		n = -n;
 		i += write (1, "-", 1);
 	}
+	if (n >= 10)
+		i += ft_putnbr(n / 10);
+	c = (n % 10) + '0';
+	i += write(1, &c, 1);
+	return (i);
+}
+
+int	ft_putnbr_pos(unsigned int n)
+{
+	int		i;
+	char	c;
+
+	i = 0;
 	if (n >= 10)
 		i += ft_putnbr(n / 10);
 	c = (n % 10) + '0';
@@ -65,31 +78,39 @@ int	ft_strlen(char *str)
 	return (i);		
 }
 
-int	ft_putnbr_base(int nb, char *base)
+int	ft_putnbr_base(unsigned int nb, char *base)
 {
 	int		i;
 	char	c;
 
 	i = 0;
-	if (nb < 0)
-	{
-		nb = -nb;
-		i += write (1, "-", 1);
-	}
-	if (nb >= ft_strlen(base))
+	if (nb >= (unsigned int)ft_strlen(base))
 		i += ft_putnbr_base(nb / ft_strlen(base), base);
 	c = base[nb % ft_strlen(base)];
 	i += write(1, &c, 1);
 	return (i);
 }
-int	ft_putnbr_base_hexa(unsigned long nb, char *base)
+int	ft_putnbr_base_hexa(unsigned int nb, char *base)
+{
+	int		i;
+	char	c;
+
+	i = 0;
+	if (nb >= (unsigned int)ft_strlen(base))
+		i += ft_putnbr_base_hexa(nb / ft_strlen(base), base);
+	c = base[nb % ft_strlen(base)];
+	i += write(1, &c, 1);
+	return (i);
+}
+
+int	ft_putnbr_addr_point(unsigned long nb, char *base)
 {
 	int		i;
 	char	c;
 
 	i = 0;
 	if (nb >= (unsigned long)ft_strlen(base))
-		i += ft_putnbr_base_hexa(nb / ft_strlen(base), base);
+		i += ft_putnbr_addr_point(nb / ft_strlen(base), base);
 	c = base[nb % ft_strlen(base)];
 	i += write(1, &c, 1);
 	return (i);
@@ -101,7 +122,7 @@ int	ft_address(unsigned long nb)
 	
 	i = 0;
 	i += write(1, "0x", 2);
-	i += ft_putnbr_base_hexa(nb, "0123456789abcdef");
+	i += ft_putnbr_addr_point(nb, "0123456789abcdef");
 	return (i);
 }
 
@@ -121,12 +142,12 @@ int	callconv(va_list args, const char *format)
 	else if (*format == 'i')
 		i += ft_putnbr(va_arg(args, int));
 	else if (*format == 'u')
-		i += ft_putnbr_base(va_arg(args, unsigned int),"0123456789");
+		i += ft_putnbr_pos(va_arg(args, unsigned int));
 	else if (*format == 'x')
-		i += ft_putnbr_base(va_arg(args, unsigned int),"0123456789abcdef");
+		i += ft_putnbr_base_hexa(va_arg(args, unsigned int),"0123456789abcdef");
 	else if (*format == 'X')
 		i += ft_putnbr_base(va_arg(args, unsigned int),"0123456789ABCDEF");
-	if (*format == '%')
+	else if (*format == '%')
 	{
 		i += write(1, "%", 1);
 		format++;
@@ -162,7 +183,8 @@ int	main(void)
 {	
 	int i = 0;
 	
-	int test = 42;
+	int test = 0;
+	int testneg = 0;
 	char *testchar="Banzai";
 	i = ft_printf("Test de %%c :\n");
 	i = ft_printf("Hello, 42! My lucky char is %c.", 'a');
@@ -175,6 +197,10 @@ int	main(void)
 	ft_printf("j'ai ecrit %d caracteres.\n", i);
 	i = printf("Hello, 42! My lucky string is %s.", testchar);
 	printf("j'ai ecrit %d caracteres.\n", i);
+
+	i = ft_printf("\nTest de %%p :\n");
+	ft_printf("Adresse du test : %p\n", &test);
+	printf("Adresse du test : %p\n", &test);
 	
 	i = ft_printf("\nTest de %%d :\n");
 	i = ft_printf("Hello, 42! My lucky number is %d.", test);
@@ -188,14 +214,22 @@ int	main(void)
 	i = printf("Hello, 42! My lucky number is %i.", test);
 	printf("j'ai ecrit %i caracteres.\n", i);
 
-	i = ft_printf("\nTest de %%p :\n");
-	ft_printf("Addresse du test : %p\n", &test);
-	printf("Addresse du test : %p\n", &test);
-/*
-	ft_printf("Testing negative numbers: %d, %d\n", -1, -2147483648);
-	ft_printf("This is a plain text without numbers.\n");
-	
-	ft_printf("the alphabet go from %c to %c letter and count %d letters\n", 'a', 'z', 26);
-*/
+	i = ft_printf("\nTest de %%u :\n");
+	i = ft_printf("Hello, 42! My lucky number is %u.", testneg);
+	ft_printf("j'ai ecrit %i caracteres.\n", i);
+	i = printf("Hello, 42! My lucky number is %u.", testneg);
+	printf("j'ai ecrit %i caracteres.\n", i);
+
+	i = ft_printf("\nTest de %%x :\n");
+	i = ft_printf("Hello, 42! My lucky number is %x.", test);
+	ft_printf("j'ai ecrit %i caracteres.\n", i);
+	i = printf("Hello, 42! My lucky number is %x.", test);
+	printf("j'ai ecrit %i caracteres.\n", i);
+
+	i = ft_printf("\nTest de %%X :\n");
+	i = ft_printf("Hello, 42! My lucky number is %X.", testneg);
+	ft_printf("j'ai ecrit %i caracteres.\n", i);
+	i = printf("Hello, 42! My lucky number is %X.", testneg);
+	printf("j'ai ecrit %i caracteres.\n", i);
 	return (0);
 }
