@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_pos.c                                    :+:      :+:    :+:   */
+/*   ft_address_pf.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: badal-la <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/19 17:48:58 by badal-la          #+#    #+#             */
-/*   Updated: 2024/11/19 18:05:32 by badal-la         ###   ########.fr       */
+/*   Created: 2024/11/20 09:54:36 by badal-la          #+#    #+#             */
+/*   Updated: 2024/11/20 10:32:49 by badal-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
+#include "ft_printf.h"
 
-int	ft_putnbr_pos(unsigned int n)
+int	ft_address_pf(unsigned long nb)
 {
-	int		i;
-	char	c;
+	int	i;
 
 	i = 0;
-	if (n >= 10)
-		i += ft_putnbr(n / 10);
-	c = (n % 10) + '0';
-	i += write(1, &c, 1);
+	if (nb == 0)
+		return (write(1, "(nil)", 5));
+	i += write(1, "0x", 2);
+	i += ft_putnbr_addr_ptr_pf(nb, "0123456789abcdef");
 	return (i);
 }

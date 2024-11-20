@@ -1,35 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft_printf.h                                     :+:      :+:    :+:   */
+/*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: badal-la <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 10:22:07 by badal-la          #+#    #+#             */
-/*   Updated: 2024/11/19 18:05:14 by badal-la         ###   ########.fr       */
+/*   Updated: 2024/11/20 10:05:04 by badal-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFTPRINTF_H
-# define LIBFTPRINTF_H
+#ifndef FT_PRINTF_H
+# define FT_PRINTF_H
 
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdarg.h>
 
-int	ft_address(unsigned long nb);
+int	ft_address_pf(unsigned long nb);
 
-int	ft_putnbr(int n);
+int	ft_putnbr_pf(int n);
 
-int	ft_putnbr_base(unsigned int nb, char *base);
+int	ft_putnbr_base_pf(unsigned int nb, char *base);
 
-int	ft_putnbr_addr_ptr(unsigned long nb, char *base);
+int	ft_putnbr_addr_ptr_pf(unsigned long nb, char *base);
 
-int	ft_putnbr_pos(unsigned int n);
+int	ft_putnbr_pos_pf(unsigned int n);
 
-int	ft_putchar(char c);
+int	ft_putchar_pf(char c);
 
-int	ft_putstr(char *s);
+int	ft_putstr_pf(char *s);
 
 int	ft_strlen(char *str);
 

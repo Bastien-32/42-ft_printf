@@ -1,6 +1,6 @@
 LIBC = ft_printf.c \
-	ft_putnbr_addr_ptr.c ft_address.c ft_putnbr_base.c ft_strlen.c\
-	ft_putchar.c ft_putnbr_pos.c ft_putnbr.c \
+	ft_putnbr_addr_ptr_pf.c ft_address_pf.c ft_putnbr_base_pf.c ft_strlen.c\
+	ft_putchar_pf.c ft_putnbr_pos_pf.c ft_putnbr_pf.c ft_putstr_pf.c \
 
 SRC = ${LIBC}
 

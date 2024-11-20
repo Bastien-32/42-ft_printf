@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr.c                                        :+:      :+:    :+:   */
+/*   ft_putnbr_pf.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: badal-la <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/19 17:50:33 by badal-la          #+#    #+#             */
-/*   Updated: 2024/11/19 18:05:26 by badal-la         ###   ########.fr       */
+/*   Created: 2024/11/20 09:55:40 by badal-la          #+#    #+#             */
+/*   Updated: 2024/11/20 09:57:35 by badal-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
+#include "ft_printf.h"
 
-int	ft_putnbr(int n)
+int	ft_putnbr_pf(int n)
 {
 	int		i;
 	char	c;
@@ -29,7 +29,7 @@ int	ft_putnbr(int n)
 		i += write (1, "-", 1);
 	}
 	if (n >= 10)
-		i += ft_putnbr(n / 10);
+		i += ft_putnbr_pf(n / 10);
 	c = (n % 10) + '0';
 	i += write(1, &c, 1);
 	return (i);
